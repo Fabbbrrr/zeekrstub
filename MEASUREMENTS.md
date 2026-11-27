@@ -65,6 +65,29 @@ Consequences:
 3. **Does the host enforce a certificate list at all right now?** Untested on a
    fresh install; not observable from the guest.
 
+## How to settle the fresh-install question
+
+Download the two probes from the `probes-1` release, put them on the stick, and
+install each one from Zeekrstub → Install an APK. They are empty packages; the
+only thing being measured is whether the gate accepts them.
+
+| test key | foreign key | reading |
+|---|---|---|
+| installs | installs | no cert gate right now — install the shelf today |
+| installs | refused | cert allowlist and our key is on it — re-sign other apps |
+| refused | refused | only in-place updates pass; new packages are closed |
+
+The probes are inert, so uninstall whichever lands.
+
+## Why not a CVE
+
+The app runs in a VM guest. An app in the guest can attack the guest kernel or
+the hypervisor; there is no public escape for Gunyah/GVM, and the failure mode is
+a bricked head unit. The cheaper paths are configuration, not exploitation: a
+`userdebug` build with `adb` enabled would give root over a service USB port, and
+that is a build property, not a vulnerability. Check for a service port before
+spending weeks on an exploit.
+
 ## How to take a report
 
 Zeekrstub → Diagnostics → **Save to file**, then get the file off the car. Keep
