@@ -146,7 +146,9 @@ no longer say anything.
 - Phone-scale type at car width, and a single column that overflowed 848 dp.
   Fixed by the sw600dp dimens and layout above.
 
-See [INSTALL.md](INSTALL.md) for the step-by-step install and update procedure.
+See [INSTALL.md](INSTALL.md) for the step-by-step install and update procedure,
+and [MEASUREMENTS.md](MEASUREMENTS.md) for what has been verified on the car
+(in-app self-update works; adb from the guest does not).
 
 ## Licence
 
