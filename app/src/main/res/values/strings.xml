@@ -26,6 +26,7 @@
     <string name="action_back">Back</string>
     <string name="back_glyph">←</string>
 
+    <string name="install_self_title">This file is Zeekrstub itself</string>
     <string name="install_permission_title">Install unknown apps is off</string>
     <string name="install_permission_body">Android reports that this app may not install packages. On this head unit that answer is sometimes wrong: the system installer still opens. Open the settings page and grant it, or continue and let the installer ask.\n\nThe state is re-checked before every install because this platform drops some app permissions across reboots.</string>
     <string name="install_permission_open">Open settings</string>
@@ -42,6 +43,8 @@
     <string name="settings_tag_filter">Release tag filter</string>
     <string name="settings_tag_filter_hint">v* — comma separated, * wildcard, !tag excludes</string>
     <string name="settings_api_host">API host</string>
+    <string name="settings_fallbacks">Fallback sources</string>
+    <string name="settings_fallbacks_hint">owner/repo or https://…/app.apk, one per line. Tried after the repo above.</string>
     <string name="settings_auto_check">Auto-check hourly</string>
     <string name="settings_auto_check_note">Off by default. Runs at most once an hour through JobScheduler, network only, no exact alarms, no wake locks.</string>
     <string name="settings_save">Save</string>

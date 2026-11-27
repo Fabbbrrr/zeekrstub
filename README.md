@@ -67,12 +67,18 @@ Every knob is a Gradle property in `gradle.properties` (override with `-P`):
 | `stub.tagFilter` | `v*` | default tag filter (`*` wildcard, `!` excludes) |
 | `stub.apiHost` | `api.github.com` | API host, for a mirror or GHE |
 | `stub.branch` | `main` | branch this build came from, shown on About |
+| `stub.fallbacks` | empty | extra sources, `owner/repo` or an https APK URL, tried in order |
 
 At runtime the same fields are editable in Settings, so a fork or a private
 release train needs no new APK. See [RELEASES.md](RELEASES.md) for the bump.
 
 ## What it does
 
+- **Fallback channels.** After the configured repo, the app tries each fallback:
+  another `owner/repo`, or a plain https URL to an APK. One deleted repo, one
+  rate limit or one blocked host no longer ends the only update path. A direct
+  link has no release digest, so the app says plainly that only the package id,
+  versionCode and signing key were checked.
 - **Self-update.** Lists `api.github.com/repos/<owner>/<repo>/releases`, keeps
   the tags the filter accepts, picks the arm64 (or universal) APK, downloads it
   to the app's own external files dir, checks size and the release's SHA-256
@@ -80,6 +86,9 @@ release train needs no new APK. See [RELEASES.md](RELEASES.md) for the bump.
   then offers install. Equal versionCode, older versionCode, a different package
   id, or a different signing key are all refused with the reason printed.
   The `User-Agent` header is mandatory; without it GitHub answers 403.
+- **Self-install guard.** A file that claims to be `com.fab.zeekrstub` is checked
+  before the installer sees it: a different key, an equal or lower versionCode is
+  refused with the reason, instead of a silent "app not installed".
 - **Install route.** Silent `PackageInstaller` session only when the app really
   holds `INSTALL_PACKAGES`; otherwise the system installer UI. The permission
   state is re-checked before every install because this platform drops some

@@ -235,6 +235,10 @@ public final class GithubReleases {
         HttpURLConnection connection = open(url, accept);
         try {
             int code = connection.getResponseCode();
+            if (code == 403 || code == 429) {
+                throw new IOException("GitHub refused the request (HTTP " + code
+                        + "): rate limit or block. Try again later, or add a fallback source.");
+            }
             if (code != HttpURLConnection.HTTP_OK) {
                 throw new IOException("GitHub answered HTTP " + code);
             }

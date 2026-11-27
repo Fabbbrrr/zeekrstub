@@ -53,6 +53,26 @@ On the car:
 pass; it does not batch. It copies nothing except a file another app hands it
 through the share/open path, and that copy is capped at 200 MB.
 
+## If the repo disappears, or the car cannot reach GitHub
+
+Settings → **Fallback sources** takes one entry per line, tried in order after the
+main repo:
+
+- `someone/zeekrstub` — another GitHub repo on the same API host.
+- `https://example.com/zeekrstub-1.0.3.apk` — a plain link to an APK.
+
+A direct link carries no release digest, so the app says plainly that only the
+package id, versionCode and signing key were checked. That is weaker than a
+release asset, and the status line says so.
+
+## Updating the stub from a file (no network)
+
+1. Put the newer stub APK on the stick.
+2. Zeekrstub → Install an APK → pick it.
+3. If the file is older or signed with another key, the app refuses before the
+   installer opens and tells you which. If it is newer and signed with the same
+   key, the normal install dialog appears.
+
 ## When an install is refused
 
 - **Refused instantly, right after the installer screen**: the signing-certificate

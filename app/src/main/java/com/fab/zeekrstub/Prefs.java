@@ -16,6 +16,7 @@ public final class Prefs {
     private static final String KEY_REPO = "repo";
     private static final String KEY_TAG_FILTER = "tag_filter";
     private static final String KEY_API_HOST = "api_host";
+    private static final String KEY_FALLBACKS = "fallbacks";
     private static final String KEY_AUTO_CHECK = "auto_check";
     private static final String KEY_DISCLAIMER = "disclaimer_accepted";
     private static final String KEY_LAST_CHECK = "last_check_text";
@@ -64,6 +65,18 @@ public final class Prefs {
 
     public void setApiHost(String value) {
         put(KEY_API_HOST, value);
+    }
+
+    /**
+     * Extra sources tried in order after the main repo. Either owner/repo on the
+     * same API host, or a full https APK URL.
+     */
+    public String fallbacks() {
+        return value(KEY_FALLBACKS, BuildConfig.DEFAULT_FALLBACKS);
+    }
+
+    public void setFallbacks(String value) {
+        put(KEY_FALLBACKS, value);
     }
 
     /** Off by default: nothing polls GitHub until the owner asks for it. */
@@ -119,6 +132,7 @@ public final class Prefs {
                 .remove(KEY_REPO)
                 .remove(KEY_TAG_FILTER)
                 .remove(KEY_API_HOST)
+                .remove(KEY_FALLBACKS)
                 .apply();
     }
 

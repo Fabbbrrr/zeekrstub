@@ -29,6 +29,7 @@ public final class SettingsActivity extends Activity implements UpdateFlow.Liste
     private EditText repo;
     private EditText tag;
     private EditText host;
+    private EditText fallbacks;
     private CheckBox auto;
     private TextView effective;
     private TextView lastCheck;
@@ -39,13 +40,15 @@ public final class SettingsActivity extends Activity implements UpdateFlow.Liste
         setContentView(R.layout.activity_settings);
         Ui.fitColumn(this, findViewById(R.id.column));
         Ui.fitFields(this, findViewById(R.id.edt_owner), findViewById(R.id.edt_repo),
-                findViewById(R.id.edt_tag), findViewById(R.id.edt_host));
+                findViewById(R.id.edt_tag), findViewById(R.id.edt_host),
+                findViewById(R.id.edt_fallbacks));
         Ui.header(this, findViewById(R.id.column), R.string.settings_title);
 
         owner = findViewById(R.id.edt_owner);
         repo = findViewById(R.id.edt_repo);
         tag = findViewById(R.id.edt_tag);
         host = findViewById(R.id.edt_host);
+        fallbacks = findViewById(R.id.edt_fallbacks);
         auto = findViewById(R.id.chk_auto);
         effective = findViewById(R.id.txt_effective);
         lastCheck = findViewById(R.id.txt_lastcheck);
@@ -78,6 +81,7 @@ public final class SettingsActivity extends Activity implements UpdateFlow.Liste
         repo.setText(prefs.repo());
         tag.setText(prefs.tagFilter());
         host.setText(prefs.apiHost());
+        fallbacks.setText(prefs.fallbacks());
         auto.setChecked(prefs.autoCheck());
         showEffective();
         showLastCheck();
@@ -95,6 +99,7 @@ public final class SettingsActivity extends Activity implements UpdateFlow.Liste
             return false;
         }
         prefs.setApiHost(candidate.host);
+        prefs.setFallbacks(fallbacks.getText().toString());
         prefs.setOwner(candidate.owner);
         prefs.setRepo(candidate.repo);
         prefs.setTagFilter(candidate.tagFilter);
@@ -108,7 +113,9 @@ public final class SettingsActivity extends Activity implements UpdateFlow.Liste
     }
 
     private void showEffective() {
+        int extra = UpdateFlow.splitFallbacks(Prefs.of(this).fallbacks()).size();
         effective.setText(UpdateSource.from(Prefs.of(this)).describe()
+                + (extra == 0 ? "" : "\nfallbacks: " + extra)
                 + "\nauto-check: " + (Prefs.of(this).autoCheck() ? "hourly (max)" : "off"));
     }
 

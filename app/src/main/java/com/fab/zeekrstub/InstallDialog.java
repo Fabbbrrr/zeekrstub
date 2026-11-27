@@ -5,7 +5,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.widget.Toast;
 
+import com.fab.zeekrstub.update.ApkMeta;
 import com.fab.zeekrstub.update.InstallLauncher;
+import com.fab.zeekrstub.update.UpdateDecision;
 
 import java.io.File;
 import java.util.Locale;
@@ -32,7 +34,27 @@ public final class InstallDialog {
         boolean installOpAllowed = InstallLauncher.canRequestPackageInstalls(activity);
         boolean silent = InstallLauncher.holdsInstallPackages(activity);
 
-        String message = (what == null ? "" : what + "\n\n")
+        // A file that claims to be this app is the one case where handing it to
+        // the installer is dangerous: a foreign key or a lower versionCode looks
+        // like an install, fails, and leaves the owner guessing.
+        ApkMeta self = ApkMeta.read(activity, apk);
+        String selfNote = "";
+        if (self != null && activity.getPackageName().equals(self.packageName)) {
+            UpdateDecision.Verdict verdict = UpdateDecision.check(activity.getPackageName(),
+                    BuildConfig.VERSION_CODE, CertText.appSha256(activity),
+                    self.packageName, self.versionCode, self.certHex);
+            if (!verdict.installable) {
+                new AlertDialog.Builder(activity)
+                        .setTitle(R.string.install_self_title)
+                        .setMessage(verdict.reason)
+                        .setPositiveButton(R.string.action_ok, null)
+                        .show();
+                return;
+            }
+            selfNote = "This is Zeekrstub itself: " + verdict.reason + "\n\n";
+        }
+
+        String message = selfNote + (what == null ? "" : what + "\n\n")
                 + "File: " + (apk == null ? "none" : apk.getName()) + " (" + size + ")\n"
                 + "Install unknown apps: " + (installOpAllowed ? "granted" : "denied")
                 + "\nINSTALL_PACKAGES: " + (silent ? "held — silent install" : "not held — system UI")

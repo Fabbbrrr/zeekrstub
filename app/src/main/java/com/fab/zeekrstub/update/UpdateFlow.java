@@ -10,7 +10,9 @@ import com.fab.zeekrstub.CertText;
 import com.fab.zeekrstub.Prefs;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Locale;
 
 /**
@@ -128,17 +130,78 @@ public final class UpdateFlow {
         }
     }
 
+    /**
+     * Tries the configured repo first, then each fallback in order. A fallback is
+     * either {@code owner/repo} on the same API host or a plain https URL to an
+     * APK. One deleted repo, one rate limit, one blocked host must not end the
+     * only update channel this app has.
+     */
     private static Result checkNow(Context app, StatusSink status, boolean includeSameTag) {
-        UpdateSource source = UpdateSource.from(Prefs.of(app));
-        if (!source.valid()) {
-            return error("settings are not a valid GitHub owner/repo: " + source.describe());
+        Prefs prefs = Prefs.of(app);
+        UpdateSource source = UpdateSource.from(prefs);
+        List<String> problems = new ArrayList<>();
+        Result noUpdate = null;
+
+        if (source.valid()) {
+            Result result = checkChannel(app, source, status, includeSameTag, problems);
+            if (result != null && result.kind != Kind.NO_UPDATE) {
+                return result;
+            }
+            noUpdate = result;
+        } else {
+            problems.add("settings are not a valid GitHub owner/repo: " + source.describe());
         }
+
+        for (String entry : splitFallbacks(prefs.fallbacks())) {
+            if (entry.startsWith("http://") || entry.startsWith("https://")) {
+                Result direct = directUrl(entry);
+                if (direct != null) {
+                    return direct;
+                }
+                problems.add(entry + ": not an https APK URL");
+                continue;
+            }
+            String owner = entry;
+            String repo = "";
+            int slash = entry.indexOf('/');
+            if (slash > 0) {
+                owner = entry.substring(0, slash);
+                repo = entry.substring(slash + 1);
+            }
+            UpdateSource alt = new UpdateSource(source.host, owner, repo, source.tagFilter);
+            if (!alt.valid()) {
+                problems.add(entry + ": not owner/repo");
+                continue;
+            }
+            Result result = checkChannel(app, alt, status, includeSameTag, problems);
+            if (result != null && result.kind != Kind.NO_UPDATE) {
+                return result;
+            }
+            if (result != null) {
+                noUpdate = result;
+            }
+        }
+
+        if (noUpdate != null && problems.isEmpty()) {
+            return noUpdate;
+        }
+        if (noUpdate != null) {
+            return new Result(Kind.NO_UPDATE, noUpdate.text + " (also tried: "
+                    + String.join("; ", problems) + ")", noUpdate.release, noUpdate.asset, null, null);
+        }
+        return error("check failed on every source: " + String.join("; ", problems));
+    }
+
+    /** One GitHub repo. Returns null when it could not answer. */
+    private static Result checkChannel(Context app, UpdateSource source, StatusSink status,
+                                       boolean includeSameTag, List<String> problems) {
         status.status("checking " + source.describe());
         List<GithubReleases.Release> releases;
         try {
             releases = GithubReleases.fetch(source);
         } catch (Throwable e) {
-            return error("check failed: " + reason(e));
+            problems.add(source.describe() + ": " + reason(e));
+            return null;
         }
         if (releases.isEmpty()) {
             return new Result(Kind.NO_UPDATE,
@@ -160,6 +223,47 @@ public final class UpdateFlow {
         status.status("found " + newest.tagName + ": " + GithubReleases.describe(asset));
         return new Result(Kind.FOUND, "update " + newest.tagName + " available: "
                 + GithubReleases.describe(asset), newest, asset, null, null);
+    }
+
+    /**
+     * A plain APK URL. No release metadata, so no tag comparison and no digest:
+     * the package id, the versionCode and the signing key are still checked after
+     * the download, and the status says so instead of implying more.
+     */
+    private static Result directUrl(String url) {
+        String name;
+        try {
+            java.net.URL parsed = DownloadIntegrity.https(url);
+            String path = parsed.getPath();
+            name = path == null || path.isEmpty()
+                    ? "update.apk" : path.substring(path.lastIndexOf('/') + 1);
+        } catch (Throwable e) {
+            return null;
+        }
+        if (!name.toLowerCase(Locale.US).endsWith(".apk")) {
+            return null;
+        }
+        GithubReleases.Asset asset = new GithubReleases.Asset(name, url, 0, "");
+        GithubReleases.Release release = new GithubReleases.Release("direct", url, "",
+                java.util.Collections.singletonList(asset));
+        return new Result(Kind.FOUND, "direct link " + name
+                + ": no release digest and no published size, so only the package, versionCode"
+                + " and signing key can be checked", release, asset, null, null);
+    }
+
+    /** Fallbacks are comma or newline separated; blanks are ignored. */
+    public static List<String> splitFallbacks(String raw) {
+        List<String> out = new ArrayList<>();
+        if (raw == null) {
+            return out;
+        }
+        for (String piece : raw.split("[,\n\r]+")) {
+            String entry = piece.trim();
+            if (!entry.isEmpty()) {
+                out.add(entry);
+            }
+        }
+        return out;
     }
 
     /**
@@ -212,9 +316,15 @@ public final class UpdateFlow {
         } catch (Throwable e) {
             return error("download failed: " + reason(e));
         }
-        String verified = hasDigest
-                ? "downloaded, SHA-256 verified against the release asset"
-                : "downloaded, size verified (release published no SHA-256 digest)";
+        String verified;
+        if (hasDigest) {
+            verified = "downloaded, SHA-256 verified against the release asset";
+        } else if (found.asset.bytes > 0) {
+            verified = "downloaded, size verified (release published no SHA-256 digest)";
+        } else {
+            verified = "downloaded from a direct link: no digest and no published size,"
+                    + " so only the package, versionCode and key were checked";
+        }
         ApkMeta meta = ApkMeta.read(app, target);
         if (meta == null) {
             return error("downloaded file is not a readable APK");

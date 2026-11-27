@@ -17,6 +17,7 @@ val stubRepo = prop("stub.repo", "zeekrstub")
 val stubTagFilter = prop("stub.tagFilter", "v*")
 val stubApiHost = prop("stub.apiHost", "api.github.com")
 val stubBranch = prop("stub.branch", "main")
+val stubFallbacks = prop("stub.fallbacks", "")
 
 // The one key this app may ever be signed with. It is the reference repo's
 // checked-in public AOSP test key (alias apkeasytool, password android).
@@ -40,6 +41,7 @@ android {
         buildConfigField("String", "DEFAULT_REPO", "\"$stubRepo\"")
         buildConfigField("String", "DEFAULT_TAG_FILTER", "\"$stubTagFilter\"")
         buildConfigField("String", "DEFAULT_API_HOST", "\"$stubApiHost\"")
+        buildConfigField("String", "DEFAULT_FALLBACKS", "\"$stubFallbacks\"")
         buildConfigField("String", "RELEASE_BRANCH", "\"$stubBranch\"")
         buildConfigField("String", "EXPECTED_CERT_SHA256", "\"$expectedCertSha256\"")
     }

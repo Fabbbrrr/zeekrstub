@@ -100,6 +100,26 @@
             android:singleLine="true"
             android:importantForAutofill="no" />
 
+        <TextView
+            style="@style/Text.Muted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_item"
+            android:text="@string/settings_fallbacks" />
+
+        <EditText
+            android:id="@+id/edt_fallbacks"
+            style="@style/Text.Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_field"
+            android:hint="@string/settings_fallbacks_hint"
+            android:inputType="textUri|textMultiLine"
+            android:minLines="2"
+            android:padding="@dimen/gap_item"
+            android:importantForAutofill="no" />
+
         <CheckBox
             android:id="@+id/chk_auto"
             style="@style/Text.Body"
