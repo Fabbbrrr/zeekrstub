@@ -241,8 +241,18 @@ public final class DiagnosticsCollector {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setType(APK_MIME);
             List<ResolveInfo> matches = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-            int count = matches == null ? 0 : matches.size();
-            return count == 0 ? "none" : "resolvable:" + count;
+            if (matches == null || matches.isEmpty()) {
+                return "none";
+            }
+            // Names, not just a count: which installer the guest can see decides
+            // whether the car routes installs through a whitelisted store.
+            java.util.TreeSet<String> names = new java.util.TreeSet<>();
+            for (ResolveInfo match : matches) {
+                if (match != null && match.activityInfo != null) {
+                    names.add(match.activityInfo.packageName + "/" + match.activityInfo.name);
+                }
+            }
+            return "resolvable:" + names.size() + " [" + String.join(", ", names) + "]";
         } catch (Throwable ignored) {
             return CertText.UNAVAILABLE;
         }

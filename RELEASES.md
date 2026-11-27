@@ -8,6 +8,7 @@ breaks every later update.
 
 | versionCode | versionName | tag | status |
 |---|---|---|---|
+| 6 | 1.0.5 | `v1.0.5` | report names the installers the guest can see |
 | 5 | 1.0.4 | `v1.0.4` | diagnostics name the guest view; self-update measurement |
 | 4 | 1.0.3 | `v1.0.3` | spare identity: two APKs per release |
 | 3 | 1.0.2 | `v1.0.2` | fallback update sources; self-install guard |
