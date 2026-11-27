@@ -61,6 +61,13 @@ public final class UpdateFlow {
     }
 
     private static final String WORK_DIR = "updates";
+    /** Marks the spare identity's asset, so each package takes only its own file. */
+    private static final String SPARE_TOKEN = "spare";
+
+    /** "spare" for the spare package, null for the main one. */
+    static String ownAssetToken() {
+        return BuildConfig.APPLICATION_ID.endsWith("." + SPARE_TOKEN) ? SPARE_TOKEN : null;
+    }
 
     private UpdateFlow() {
     }
@@ -208,10 +215,14 @@ public final class UpdateFlow {
                     "no update: no release matches " + source.describe(), null, null, null, null);
         }
         GithubReleases.Release newest = releases.get(0);
-        GithubReleases.Asset asset = GithubReleases.pickAsset(newest);
+        // The release carries one APK per identity; take only this one's.
+        String wanted = ownAssetToken();
+        String unwanted = wanted == null ? SPARE_TOKEN : null;
+        GithubReleases.Asset asset = GithubReleases.pickAsset(newest, wanted, unwanted);
         if (asset == null) {
             return new Result(Kind.NO_UPDATE, "no update: release " + newest.tagName
-                    + " carries no installable APK for arm64", newest, null, null, null);
+                    + " carries no installable APK for " + BuildConfig.APPLICATION_ID,
+                    newest, null, null, null);
         }
         String installed = currentVersionName(app);
         if (!VersionName.isNewer(newest.tagName, installed) && !includeSameTag) {

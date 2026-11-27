@@ -11,6 +11,9 @@ the lifeline at the same time.
 
 - `applicationId` `com.fab.zeekrstub` — forever. A rename is a fresh install,
   which the gate may refuse.
+- A spare identity, `com.fab.zeekrstub.spare`, from the same source and the same
+  key, installed alongside it on day one. If the main package ever breaks, the
+  spare still updates itself. One release carries one APK per identity.
 - Signed with the public AOSP test key the reference repo uses, because Zeekr OS
   is built on AOSP test keys: if the platform accepts that key, this app is on
   the list by construction.
@@ -40,7 +43,7 @@ a bogus `IOException`.
 
 ```bash
 ./gradlew :app:testDebugUnitTest    # 80 unit tests, JUnit 4.13.2 + Robolectric 4.16
-./gradlew :app:distRelease          # dist/zeekrstub-<versionName>.apk
+./gradlew :app:distAll              # dist/zeekrstub-<ver>.apk and dist/zeekrstub-spare-<ver>.apk
 ```
 
 The build refuses to run if `keystore/release.jks` is not the recorded

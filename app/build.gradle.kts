@@ -75,6 +75,21 @@ android {
                 "proguard-rules.pro"
             )
         }
+        // Spare door: the same code and the same key under a second applicationId.
+        // If the main package ever breaks, this one still updates itself. Both
+        // share versionCode and versionName, so one bump covers both, and the
+        // release carries one asset each.
+        create("spare") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".spare"
+            resValue("string", "app_name", "Zeekrstub Spare")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
         debug {
             // Same id and key as release, so a debug build can be pushed over a
             // release install on the car. It shares the release versionCode;
@@ -87,6 +102,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        resValues = true   // the spare identity needs its own app name
     }
 
     compileOptions {
@@ -140,7 +156,20 @@ val verifyStubKey = tasks.register("verifyStubKey") {
     }
 }
 
-// One predictable artifact name per release: dist/zeekrstub-<versionName>.apk
+// One predictable artifact name per release, one per identity.
+tasks.register<Copy>("distSpare") {
+    dependsOn("assembleSpare")
+    from(layout.buildDirectory.dir("outputs/apk/spare")) {
+        include("*.apk")
+    }
+    into(rootProject.layout.projectDirectory.dir("dist"))
+    rename { "zeekrstub-spare-${stubVersionName}.apk" }
+}
+
+tasks.register("distAll") {
+    dependsOn("distRelease", "distSpare")
+}
+
 tasks.register<Copy>("distRelease") {
     dependsOn("assembleRelease")
     from(layout.buildDirectory.dir("outputs/apk/release")) {

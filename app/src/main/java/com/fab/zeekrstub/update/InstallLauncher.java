@@ -213,7 +213,8 @@ public final class InstallLauncher {
                     continue;
                 }
                 String pkg = info.activityInfo.packageName;
-                if (self.equals(pkg)) {
+                // Skip this app and its spare copy: both register for the type.
+                if (self.equals(pkg) || pkg.startsWith(self)) {
                     continue;
                 }
                 if ("com.android.packageinstaller".equals(pkg)

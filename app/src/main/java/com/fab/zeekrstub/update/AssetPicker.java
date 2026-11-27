@@ -28,11 +28,28 @@ public final class AssetPicker {
 
     /** Rank of an asset name for an arm64 device; {@link #NOT_A_CANDIDATE} when it is not an APK. */
     public static int rank(String name) {
+        return rank(name, null, null);
+    }
+
+    /**
+     * Rank with an identity filter. A release can carry one APK per identity
+     * (main and spare), and each app must take only its own: {@code requiredToken}
+     * must appear in the name, {@code excludedToken} must not.
+     */
+    public static int rank(String name, String requiredToken, String excludedToken) {
         if (name == null) {
             return NOT_A_CANDIDATE;
         }
         String lower = name.trim().toLowerCase(Locale.US);
         if (lower.isEmpty()) {
+            return NOT_A_CANDIDATE;
+        }
+        if (requiredToken != null && !requiredToken.isEmpty()
+                && !lower.contains(requiredToken.toLowerCase(Locale.US))) {
+            return NOT_A_CANDIDATE;
+        }
+        if (excludedToken != null && !excludedToken.isEmpty()
+                && lower.contains(excludedToken.toLowerCase(Locale.US))) {
             return NOT_A_CANDIDATE;
         }
         if (lower.endsWith(".xapk") || lower.endsWith(".apkm") || lower.endsWith(".apks")
@@ -66,6 +83,11 @@ public final class AssetPicker {
      * name, then alphabetical — two runs on the same release pick the same file.
      */
     public static int bestIndex(List<String> names) {
+        return bestIndex(names, null, null);
+    }
+
+    /** Same as {@link #bestIndex(List)} with an identity filter. */
+    public static int bestIndex(List<String> names, String requiredToken, String excludedToken) {
         if (names == null) {
             return -1;
         }
@@ -73,7 +95,7 @@ public final class AssetPicker {
         int bestRank = WRONG_ABI;
         for (int i = 0; i < names.size(); i++) {
             String name = names.get(i);
-            int rank = rank(name);
+            int rank = rank(name, requiredToken, excludedToken);
             if (rank == NOT_A_CANDIDATE || rank == WRONG_ABI) {
                 continue;
             }

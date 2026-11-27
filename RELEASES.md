@@ -8,6 +8,7 @@ breaks every later update.
 
 | versionCode | versionName | tag | status |
 |---|---|---|---|
+| 4 | 1.0.3 | `v1.0.3` | spare identity: two APKs per release |
 | 3 | 1.0.2 | `v1.0.2` | fallback update sources; self-install guard |
 | 2 | 1.0.1 | `v1.0.1` | back control on every screen; first self-update target |
 | 1 | 1.0.0 | `v1.0.0` | first install, superseded by 1.0.1 |
@@ -26,7 +27,17 @@ breaks every later update.
    ./gradlew :app:distRelease
    ```
 
-4. Check the artifact before publishing:
+4. Build **both** identities and check both artifacts before publishing:
+
+   ```bash
+   ./gradlew :app:distAll     # dist/zeekrstub-<ver>.apk and dist/zeekrstub-spare-<ver>.apk
+   ```
+
+   Attach both to the release. Each app picks only its own asset by name
+   (`spare` token), so a release with one APK leaves the other identity with
+   nothing to install.
+
+5. Check the artifacts before publishing:
 
    ```bash
    BT=$ANDROID_HOME/build-tools/36.0.0
@@ -38,8 +49,8 @@ breaks every later update.
    `a40da80a59d170caa950cf15c18c454d47a39b26989d8b640ecd745ba71bf5dc`, and a file
    well under 5 MB.
 
-5. Commit the bump, tag `v<versionName>`, push the tag.
-6. Publish a GitHub release named `<versionName>` with the APK attached and the
+6. Commit the bump, tag `v<versionName>`, push the tag.
+7. Publish a GitHub release named `<versionName>` with both APKs attached and the
    SHA-256 digest in the body. GitHub computes the asset digest itself; the app
    verifies against it when present, and says so plainly when it is absent.
 7. On the car: open the app, Check for updates, download, install. When the

@@ -138,10 +138,15 @@ public final class GithubReleases {
 
     /** Asset to install from a release, or null when nothing fits an arm64 device. */
     public static Asset pickAsset(Release release) {
+        return pickAsset(release, null, null);
+    }
+
+    /** As above, but only assets whose name carries {@code requiredToken} and not {@code excludedToken}. */
+    public static Asset pickAsset(Release release, String requiredToken, String excludedToken) {
         if (release == null || release.assets.isEmpty()) {
             return null;
         }
-        int index = AssetPicker.bestIndex(release.assetNames());
+        int index = AssetPicker.bestIndex(release.assetNames(), requiredToken, excludedToken);
         return index < 0 ? null : release.assets.get(index);
     }
 

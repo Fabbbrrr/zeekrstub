@@ -59,16 +59,18 @@ jobs:
           ARGS=""
           if [ -n "${{ inputs.version_code }}" ]; then ARGS="$ARGS -Pstub.versionCode=${{ inputs.version_code }}"; fi
           if [ -n "${{ inputs.version_name }}" ]; then ARGS="$ARGS -Pstub.versionName=${{ inputs.version_name }}"; fi
-          ./gradlew :app:distRelease --console=plain $ARGS
+          ./gradlew :app:distRelease :app:distSpare --console=plain $ARGS
 
-      - name: Prove the signature and the version
+      - name: Prove the signature and the version of both identities
         run: |
           BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
-          APK=$(ls dist/*.apk | head -1)
-          "$BT/aapt2" dump badging "$APK" | head -4
-          "$BT/apksigner" verify --print-certs "$APK"
-          sha256sum "$APK"
-          ls -l "$APK"
+          for APK in dist/*.apk; do
+            echo "== $APK"
+            "$BT/aapt2" dump badging "$APK" | head -2
+            "$BT/apksigner" verify --print-certs "$APK"
+            sha256sum "$APK"
+            ls -l "$APK"
+          done
 
       - name: Publish release
         if: inputs.publish == true
