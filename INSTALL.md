@@ -10,6 +10,21 @@ Two different jobs. Do not mix them up.
 First install of the stub has to happen while the door is still open (USB stick
 or a file manager). After that: **do not uninstall it.**
 
+## Day one: install both identities
+
+The repo ships two packages from the same source and key:
+
+| file | package |
+|---|---|
+| `zeekrstub-<ver>.apk` | `com.fab.zeekrstub` |
+| `zeekrstub-spare-<ver>.apk` | `com.fab.zeekrstub.spare` |
+
+Install **both** now, while fresh installs still work. They are independent: the
+spare updates itself from the same release and takes only its own asset. If the
+main package ever wedges, the spare is still there, still updatable, and can hand
+the main APK to the installer. After the gate closes you cannot add the second
+one, so this is a one-time window.
+
 ## Self-update, every release
 
 On the build machine:
