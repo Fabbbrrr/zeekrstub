@@ -39,7 +39,7 @@ public final class AboutActivity extends Activity {
         setContentView(scroll);
         Ui.fitColumn(this, column);
 
-        addTitle(column, getString(R.string.about_title));
+        Ui.header(this, column, R.string.about_title);
         addSection(column, "Build");
         addRow(column, "applicationId", BuildConfig.APPLICATION_ID);
         addRow(column, "versionName", BuildConfig.VERSION_NAME);
@@ -81,16 +81,6 @@ public final class AboutActivity extends Activity {
         long at = prefs.lastCheckAt();
         return text + (at == 0 ? "" : " @ " + new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
                 .format(new Date(at)));
-    }
-
-    private void addTitle(LinearLayout column, String text) {
-        TextView view = new TextView(this);
-        view.setText(text);
-        view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
-        view.setTextColor(ContextCompat.getColor(this, R.color.text));
-        view.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
-        view.setPadding(0, 0, 0, dp(8));
-        column.addView(view);
     }
 
     private void addSection(LinearLayout column, String text) {

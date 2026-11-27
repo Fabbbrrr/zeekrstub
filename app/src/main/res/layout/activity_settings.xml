@@ -17,12 +17,6 @@
         android:paddingBottom="@dimen/pad_screen_top">
 
         <TextView
-            style="@style/Text.Title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_title" />
-
-        <TextView
             style="@style/Text.Section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

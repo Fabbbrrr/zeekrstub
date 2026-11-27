@@ -8,7 +8,8 @@ breaks every later update.
 
 | versionCode | versionName | tag | status |
 |---|---|---|---|
-| 1 | 1.0.0 | `v1.0.0` | first install, not yet on a car |
+| 2 | 1.0.1 | `v1.0.1` | back control on every screen; first self-update target |
+| 1 | 1.0.0 | `v1.0.0` | first install, superseded by 1.0.1 |
 
 ## Cutting a release
 

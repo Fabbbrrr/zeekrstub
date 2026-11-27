@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Top-left back control, as the reference app's spec requires: "menu or back,
+  always in this position". The car may give the user no system back button, so
+  every screen that is not the root carries its own.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/gap_item">
+
+    <Button
+        android:id="@+id/btn_back"
+        style="@style/Button.Icon"
+        android:layout_width="@dimen/back_button_size"
+        android:layout_height="@dimen/back_button_size"
+        android:contentDescription="@string/action_back"
+        android:text="@string/back_glyph" />
+
+    <TextView
+        android:id="@+id/txt_header_title"
+        style="@style/Text.Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginLeft="14dp"
+        android:layout_weight="1" />
+</LinearLayout>

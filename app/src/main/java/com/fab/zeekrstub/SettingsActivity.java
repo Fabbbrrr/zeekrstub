@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public final class SettingsActivity extends Activity implements UpdateFlow.Liste
         Ui.fitColumn(this, findViewById(R.id.column));
         Ui.fitFields(this, findViewById(R.id.edt_owner), findViewById(R.id.edt_repo),
                 findViewById(R.id.edt_tag), findViewById(R.id.edt_host));
+        Ui.header(this, findViewById(R.id.column), R.string.settings_title);
 
         owner = findViewById(R.id.edt_owner);
         repo = findViewById(R.id.edt_repo);

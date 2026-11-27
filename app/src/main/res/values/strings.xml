@@ -23,6 +23,8 @@
     <string name="install_go">Install</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_ok">OK</string>
+    <string name="action_back">Back</string>
+    <string name="back_glyph">←</string>
 
     <string name="install_permission_title">Install unknown apps is off</string>
     <string name="install_permission_body">Android reports that this app may not install packages. On this head unit that answer is sometimes wrong: the system installer still opens. Open the settings page and grant it, or continue and let the installer ask.\n\nThe state is re-checked before every install because this platform drops some app permissions across reboots.</string>

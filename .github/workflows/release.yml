@@ -50,7 +50,9 @@ jobs:
         run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
 
       - name: Unit tests
-        run: ./gradlew :app:testDebugUnitTest --console=plain
+        run: |
+          chmod +x gradlew   # a Windows checkout loses the exec bit
+          ./gradlew :app:testDebugUnitTest --console=plain
 
       - name: Signed release APK
         run: |

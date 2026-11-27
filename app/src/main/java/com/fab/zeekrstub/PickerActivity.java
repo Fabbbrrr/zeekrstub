@@ -102,12 +102,7 @@ public final class PickerActivity extends Activity {
         int pad = dp(20);
         column.setPadding(pad, dp(24), pad, dp(16));
 
-        TextView title = new TextView(this);
-        title.setText(R.string.picker_title);
-        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
-        title.setTextColor(ContextCompat.getColor(this, R.color.text));
-        title.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
-        column.addView(title);
+        Ui.header(this, column, R.string.picker_title);
 
         TextView note = new TextView(this);
         note.setText(R.string.picker_fat32);

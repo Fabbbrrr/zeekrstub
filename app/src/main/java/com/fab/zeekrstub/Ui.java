@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 /**
  * Layout helpers that exist because the same APK runs on a 411 dp phone and on
@@ -38,6 +39,21 @@ public final class Ui {
             field.getLayoutParams().width = width;
             field.requestLayout();
         }
+    }
+
+    /**
+     * Puts the back control and the screen title at the top of a column.
+     * Without this every screen but the root is a dead end when the platform
+     * gives the user no system back button, which is the case on the car.
+     */
+    public static void header(Activity activity, ViewGroup column, int titleRes) {
+        if (activity == null || column == null) {
+            return;
+        }
+        View header = activity.getLayoutInflater().inflate(R.layout.view_header, column, false);
+        ((TextView) header.findViewById(R.id.txt_header_title)).setText(titleRes);
+        header.findViewById(R.id.btn_back).setOnClickListener(v -> activity.finish());
+        column.addView(header, 0);
     }
 
     /** Caps the column width at content_max_width and centres it. Keeps the height it had. */

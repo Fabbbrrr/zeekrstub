@@ -17,4 +17,6 @@
     <!-- No cap on a narrow window; the car caps it in sw600dp. -->
     <dimen name="content_max_width">100000dp</dimen>
     <dimen name="form_max_width">100000dp</dimen>
+    <dimen name="back_button_size">48dp</dimen>
+    <dimen name="back_glyph_size">22sp</dimen>
 </resources>
