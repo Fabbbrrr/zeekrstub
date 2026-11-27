@@ -33,6 +33,37 @@ public final class PropFilter {
     }
 
     /**
+     * True when the properties describe a virtual machine rather than the head
+     * unit itself. The car runs apps inside a guest (App Lab): model
+     * "msmnile_gvmq", ro.kernel.qemu, goldfish/ranchu hardware. Everything the
+     * report says about permissions then describes the guest, not the host, and
+     * the reader has to know that before drawing conclusions.
+     */
+    public static boolean virtualized(java.util.Map<String, String> props) {
+        if (props == null || props.isEmpty()) {
+            return false;
+        }
+        if ("1".equals(trim(props.get("ro.kernel.qemu")))) {
+            return true;
+        }
+        String bootQemu = trim(props.get("ro.boot.qemu"));
+        if (!bootQemu.isEmpty() && !"0".equals(bootQemu)) {
+            return true;
+        }
+        String model = trim(props.get("ro.product.model")).toLowerCase(Locale.US);
+        if (model.contains("gvmq") || model.contains("goldfish")
+                || model.contains("ranchu") || model.contains("sdk_gphone")) {
+            return true;
+        }
+        String hardware = trim(props.get("ro.hardware")).toLowerCase(Locale.US);
+        return hardware.equals("ranchu") || hardware.equals("goldfish");
+    }
+
+    private static String trim(String value) {
+        return value == null ? "" : value.trim();
+    }
+
+    /**
      * True when the key or the value carries a noise word. Key rules first:
      * every ro.product.* key and the display id always match.
      */

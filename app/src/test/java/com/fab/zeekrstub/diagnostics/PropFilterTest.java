@@ -11,6 +11,25 @@ import java.util.Map;
 /** The filter and the spoof marker are pure, so they get pinned here. */
 public class PropFilterTest {
 
+    @org.junit.Test
+    public void virtualizedReadsTheGuestMarkers() {
+        java.util.Map<String, String> gvm = new java.util.HashMap<>();
+        gvm.put("ro.product.model", "msmnile_gvmq for arm64");
+        gvm.put("ro.product.device", "zeekr_dhu_sa8295_ovs");
+        org.junit.Assert.assertTrue(PropFilter.virtualized(gvm));
+
+        java.util.Map<String, String> qemu = new java.util.HashMap<>();
+        qemu.put("ro.kernel.qemu", "1");
+        org.junit.Assert.assertTrue(PropFilter.virtualized(qemu));
+
+        java.util.Map<String, String> real = new java.util.HashMap<>();
+        real.put("ro.product.model", "Zeekr 7X");
+        real.put("ro.product.device", "zeekr_dhu_sa8295");
+        org.junit.Assert.assertFalse(PropFilter.virtualized(real));
+
+        org.junit.Assert.assertFalse(PropFilter.virtualized(new java.util.HashMap<>()));
+    }
+
     @Test
     public void noiseWordsInKeyMatch() {
         assertTrue(PropFilter.matches("ro.package_verifier_enable", "1"));

@@ -112,8 +112,16 @@ public final class DiagnosticsCollector {
         out.append("count=").append(packages.isEmpty()
                 ? PackageInventory.UNAVAILABLE
                 : String.valueOf(packages.size())).append('\n');
+        boolean anyInstaller = false;
         for (PackageInfo info : packages) {
-            out.append(PackageInventory.line(context, info)).append('\n');
+            String line = PackageInventory.line(context, info);
+            if (!line.contains("installer=unavailable")) {
+                anyInstaller = true;
+            }
+            out.append(line).append('\n');
+        }
+        if (!packages.isEmpty() && !anyInstaller) {
+            out.append("install_sources=unavailable (the platform hides them; this is not the host view)\n");
         }
     }
 
@@ -174,6 +182,8 @@ public final class DiagnosticsCollector {
             out.append(key).append('=').append(PropProbe.value(props, key)).append('\n');
         }
         out.append("spoof=").append(PropFilter.spoofMarker(props)).append('\n');
+        out.append("virtualized=").append(props.isEmpty()
+                ? CertText.UNAVAILABLE : (PropFilter.virtualized(props) ? "yes" : "no")).append('\n');
         for (Map.Entry<String, String> entry : props.entrySet()) {
             if (PropProbe.isHeadKey(entry.getKey())) {
                 continue;   // already printed above; a duplicate line breaks diffing
