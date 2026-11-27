@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Phone / small window scale. The car overrides these in values-sw600dp. -->
+    <dimen name="text_title">22sp</dimen>
+    <dimen name="text_section">12sp</dimen>
+    <dimen name="text_body">15sp</dimen>
+    <dimen name="text_muted">13sp</dimen>
+    <dimen name="text_mono">12sp</dimen>
+    <dimen name="text_banner">17sp</dimen>
+    <dimen name="text_button">15sp</dimen>
+    <dimen name="pad_screen">24dp</dimen>
+    <dimen name="pad_screen_top">20dp</dimen>
+    <dimen name="gap_section">20dp</dimen>
+    <dimen name="gap_item">10dp</dimen>
+    <dimen name="button_height">46dp</dimen>
+    <dimen name="card_pad">14dp</dimen>
+    <!-- No cap on a narrow window; the car caps it in sw600dp. -->
+    <dimen name="content_max_width">100000dp</dimen>
+    <dimen name="form_max_width">100000dp</dimen>
+</resources>

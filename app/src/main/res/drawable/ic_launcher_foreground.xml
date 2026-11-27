@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- A door with a keyhole: the app is the way in. -->
+    <path
+        android:fillColor="#35D0A5"
+        android:pathData="M30,26h48a4,4 0 0 1 4,4v48a4,4 0 0 1 -4,4h-48a4,4 0 0 1 -4,-4v-48a4,4 0 0 1 4,-4zM30,32v44h48v-44z" />
+    <path
+        android:fillColor="#E8EDF1"
+        android:pathData="M62,54m-7,0a7,7 0 1,0 14,0a7,7 0 1,0 -14,0" />
+    <path
+        android:fillColor="#E8EDF1"
+        android:pathData="M60,60h4v10h-4z" />
+</vector>

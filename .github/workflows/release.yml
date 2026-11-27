@@ -1,0 +1,63 @@
+name: release
+
+# Two ways in, both configurable:
+#   - push a tag vX.Y.Z  -> versionCode/versionName must already be bumped
+#   - run manually       -> pass version_code / version_name / branch inputs
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version_code:
+        description: 'versionCode (must be higher than the installed one)'
+        required: false
+      version_name:
+        description: 'versionName, also the release name'
+        required: false
+      branch:
+        description: 'branch to build from'
+        required: false
+        default: main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch || github.ref }}
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Unit tests
+        run: ./gradlew :app:testDebugUnitTest --console=plain
+
+      - name: Signed release APK
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.version_code }}" ]; then ARGS="$ARGS -Pstub.versionCode=${{ inputs.version_code }}"; fi
+          if [ -n "${{ inputs.version_name }}" ]; then ARGS="$ARGS -Pstub.versionName=${{ inputs.version_name }}"; fi
+          ./gradlew :app:distRelease --console=plain $ARGS
+
+      - name: Prove the signature and the version
+        run: |
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          APK=$(ls dist/*.apk | head -1)
+          "$BT/aapt2" dump badging "$APK" | head -4
+          "$BT/apksigner" verify --print-certs "$APK"
+          ls -l "$APK"
+
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.apk
+          generate_release_notes: true

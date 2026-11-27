@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Installing APKs (manual install and self-update). Signature permission:
+         normally denied, which is exactly the measurement this app collects. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
+
+    <!-- Release list + APK download. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- JobScheduler refuses a connectivity-constrained job without this. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Diagnostics read the whole package inventory. Without this, API 30+
+         returns only a handful of packages and the report would lie. -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
+    <!-- Browsing Downloads and FAT32 sticks on the picker screen (API <= 32). -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="false"
+        android:theme="@style/Theme.Stub">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".SettingsActivity" android:exported="false" />
+        <activity android:name=".AboutActivity" android:exported="false" />
+        <activity android:name=".DiagnosticsActivity" android:exported="false" />
+
+        <!-- Manual APK install: file browser plus the system "open this APK"
+             path (ACTION_VIEW content:// from any FileProvider, or file://). -->
+        <activity
+            android:name=".PickerActivity"
+            android:exported="true"
+            android:label="@string/picker_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/vnd.android.package-archive" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:mimeType="application/vnd.android.package-archive" />
+            </intent-filter>
+        </activity>
+
+        <!-- Hands the downloaded APK to the system installer. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- Hourly-at-most auto-check. BIND_JOB_SERVICE guards it; no wake lock,
+             no boot receiver, no foreground service. -->
+        <service
+            android:name=".update.UpdateJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <!-- Result callback for a silent PackageInstaller session. -->
+        <receiver
+            android:name=".update.InstallResultReceiver"
+            android:exported="false" />
+
+    </application>
+
+</manifest>

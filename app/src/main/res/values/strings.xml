@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Zeekrstub</string>
+    <string name="tagline">survival stub · com.fab.zeekrstub</string>
+
+    <!-- The rule the app embodies. On the main screen, impossible to miss. -->
+    <string name="banner_rule">Do not uninstall this app. The install door is closed; this app is the window.</string>
+
+    <string name="main_status_title">This build</string>
+    <string name="main_check">Check for updates</string>
+    <string name="main_install">Install an APK</string>
+    <string name="main_settings">Settings</string>
+    <string name="main_diagnostics">Diagnostics</string>
+    <string name="main_about">About</string>
+    <string name="main_footer">Installer rule: when it finishes, tap BACK at the top left. Never OPEN.</string>
+
+    <string name="status_idle">No check run yet.</string>
+    <string name="status_checking">Checking…</string>
+
+    <!-- Installer warning. Verbatim, and repeated in front of every install. -->
+    <string name="install_warning">When the installer finishes, tap BACK at the top left. Do NOT tap OPEN — tapping Open wedges the head unit\'s installer, and later installs and updates fail.</string>
+    <string name="install_dialog_title">Before you install</string>
+    <string name="install_go">Install</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_ok">OK</string>
+
+    <string name="install_permission_title">Install unknown apps is off</string>
+    <string name="install_permission_body">Android reports that this app may not install packages. On this head unit that answer is sometimes wrong: the system installer still opens. Open the settings page and grant it, or continue and let the installer ask.\n\nThe state is re-checked before every install because this platform drops some app permissions across reboots.</string>
+    <string name="install_permission_open">Open settings</string>
+    <string name="install_permission_anyway">Continue anyway</string>
+
+    <string name="disclaimer_title">Read this first</string>
+    <string name="disclaimer_body">Experimental, unofficial software. Not affiliated with, sponsored by, or endorsed by ZEEKR. Not certified for any vehicle safety function. Do not operate this app while driving.\n\nIt exists because a firmware update closed the door on fresh installs. Keeping this app installed, signed with the same key, is the only way new code can still arrive. Uninstalling returns the head unit to its factory apps; there is no door back in.\n\nIt holds no root, no system writes, and no wake locks.</string>
+    <string name="disclaimer_accept">I understand</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_source">Update source</string>
+    <string name="settings_owner">GitHub owner</string>
+    <string name="settings_repo">Repository</string>
+    <string name="settings_tag_filter">Release tag filter</string>
+    <string name="settings_tag_filter_hint">v* — comma separated, * wildcard, !tag excludes</string>
+    <string name="settings_api_host">API host</string>
+    <string name="settings_auto_check">Auto-check hourly</string>
+    <string name="settings_auto_check_note">Off by default. Runs at most once an hour through JobScheduler, network only, no exact alarms, no wake locks.</string>
+    <string name="settings_save">Save</string>
+    <string name="settings_reset">Reset to build defaults</string>
+    <string name="settings_check">Check now</string>
+    <string name="settings_effective">Effective source</string>
+    <string name="settings_saved">Saved.</string>
+    <string name="settings_invalid">Owner and repo must be plain names: letters, digits, dot, dash, underscore.</string>
+    <string name="settings_last_check">Last check</string>
+
+    <string name="about_title">About</string>
+
+    <string name="diagnostics_title">Diagnostics</string>
+    <string name="diagnostics_collect">Collect</string>
+    <string name="diagnostics_save">Save to file</string>
+    <string name="diagnostics_share">Share</string>
+    <string name="diagnostics_saved">Saved to %1$s</string>
+    <string name="diagnostics_share_title">Send diagnostics</string>
+    <string name="diagnostics_collecting">Collecting…</string>
+    <string name="diagnostics_note">Plain text, sorted, one item per line, so two reports diff cleanly. \"unavailable\" is a real answer.</string>
+
+    <string name="picker_title">Install an APK</string>
+    <string name="picker_fat32">This head unit reads FAT32 sticks only. exFAT and NTFS sticks will not mount. Plain APKs only: xapk, apkm and split bundles are out of scope.</string>
+    <string name="picker_up">Up</string>
+    <string name="picker_app_files">App files</string>
+    <string name="picker_app_files_external">App files (external)</string>
+    <string name="picker_app_files_internal">App files (internal)</string>
+    <string name="picker_downloads">Downloads</string>
+    <string name="picker_removable">Removable</string>
+    <string name="picker_empty">No APK here.</string>
+    <string name="picker_denied">Cannot read that folder.</string>
+    <string name="picker_split">That is a split or bundle package. This app installs plain APKs only.</string>
+    <string name="picker_copy_failed">Could not read the file that was handed over.</string>
+    <string name="picker_reading">Reading…</string>
+    <string name="picker_system_picker">Open the system file picker</string>
+    <string name="picker_system_picker_note">Works even when Android blocks the folders below.</string>
+    <string name="picker_all_files">Grant all-files access</string>
+    <string name="picker_all_files_note">Android 11+ hides Downloads and USB sticks from apps until this is granted. Grant it, then come back.</string>
+    <string name="picker_too_big">That file is over 200 MB; refusing to copy it.</string>
+
+    <string name="update_found_title">Update available</string>
+    <string name="update_download">Download and verify</string>
+    <string name="update_ready_title">Downloaded and verified</string>
+    <string name="update_install_now">Install now</string>
+    <string name="update_later">Later</string>
+    <string name="update_download_anyway">Download anyway</string>
+    <string name="update_no_update_title">No update</string>
+    <string name="update_error_title">Update failed</string>
+</resources>

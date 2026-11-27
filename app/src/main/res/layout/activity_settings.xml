@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:id="@+id/column"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/pad_screen"
+        android:paddingTop="@dimen/pad_screen_top"
+        android:paddingRight="@dimen/pad_screen"
+        android:paddingBottom="@dimen/pad_screen_top">
+
+        <TextView
+            style="@style/Text.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_title" />
+
+        <TextView
+            style="@style/Text.Section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_section"
+            android:text="@string/settings_source" />
+
+        <TextView
+            style="@style/Text.Muted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/settings_owner" />
+
+        <EditText
+            android:id="@+id/edt_owner"
+            style="@style/Text.Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_field"
+            android:inputType="text"
+            android:padding="@dimen/gap_item"
+            android:singleLine="true"
+            android:importantForAutofill="no" />
+
+        <TextView
+            style="@style/Text.Muted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_item"
+            android:text="@string/settings_repo" />
+
+        <EditText
+            android:id="@+id/edt_repo"
+            style="@style/Text.Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_field"
+            android:inputType="text"
+            android:padding="@dimen/gap_item"
+            android:singleLine="true"
+            android:importantForAutofill="no" />
+
+        <TextView
+            style="@style/Text.Muted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_item"
+            android:text="@string/settings_tag_filter" />
+
+        <EditText
+            android:id="@+id/edt_tag"
+            style="@style/Text.Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_field"
+            android:hint="@string/settings_tag_filter_hint"
+            android:inputType="text"
+            android:padding="@dimen/gap_item"
+            android:singleLine="true"
+            android:importantForAutofill="no" />
+
+        <TextView
+            style="@style/Text.Muted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_item"
+            android:text="@string/settings_api_host" />
+
+        <EditText
+            android:id="@+id/edt_host"
+            style="@style/Text.Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_field"
+            android:inputType="textUri"
+            android:padding="@dimen/gap_item"
+            android:singleLine="true"
+            android:importantForAutofill="no" />
+
+        <CheckBox
+            android:id="@+id/chk_auto"
+            style="@style/Text.Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:buttonTint="@color/accent"
+            android:text="@string/settings_auto_check" />
+
+        <TextView
+            style="@style/Text.Muted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/settings_auto_check_note" />
+
+        <Button
+            android:id="@+id/btn_save"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_section"
+            android:text="@string/settings_save" />
+
+        <Button
+            android:id="@+id/btn_check"
+            style="@style/Button.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/settings_check" />
+
+        <Button
+            android:id="@+id/btn_reset"
+            style="@style/Button.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/settings_reset" />
+
+        <TextView
+            style="@style/Text.Section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_section"
+            android:text="@string/settings_effective" />
+
+        <TextView
+            android:id="@+id/txt_effective"
+            style="@style/Text.Mono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            style="@style/Text.Section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_section"
+            android:text="@string/settings_last_check" />
+
+        <TextView
+            android:id="@+id/txt_lastcheck"
+            style="@style/Text.Muted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      The ZEEKR 7X head unit gives apps a 1600 x 848 dp area at density 2.0
+      (measured, docs/ui-spec.md in the reference repo). Phone-scale type at
+      that width is unreadable from the driver's seat, so this bucket carries
+      the car scale, close to the reference app's own type ramp
+      (title 32sp, row 24sp, body 22sp). sw600dp also catches tablets.
+    -->
+    <dimen name="text_title">32sp</dimen>
+    <dimen name="text_section">16sp</dimen>
+    <dimen name="text_body">22sp</dimen>
+    <dimen name="text_muted">20sp</dimen>
+    <dimen name="text_mono">16sp</dimen>
+    <dimen name="text_banner">24sp</dimen>
+    <dimen name="text_button">22sp</dimen>
+    <dimen name="pad_screen">40dp</dimen>
+    <dimen name="pad_screen_top">32dp</dimen>
+    <dimen name="gap_section">28dp</dimen>
+    <dimen name="gap_item">14dp</dimen>
+    <dimen name="button_height">64dp</dimen>
+    <dimen name="card_pad">22dp</dimen>
+    <!-- A 1600 dp wide single column of text is a wall; cap and centre it. -->
+    <dimen name="content_max_width">1100dp</dimen>
+    <dimen name="form_max_width">760dp</dimen>
+</resources>
